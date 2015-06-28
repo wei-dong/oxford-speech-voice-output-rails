@@ -1,0 +1,16 @@
+%h3
+  Speech APIs
+
+= form_tag("/speech", mathod: "post") do
+  =label_tag(:eng,"search:")
+  =text_field_tag(:eng)
+  =submit_tag("speech")
+
+  -if !@text.nil?
+    %br/
+    %br/
+    %audio{:controls =>"controls",:src =>"tts/#{@name}.wav"}
+
+
+
+
