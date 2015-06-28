@@ -1,7 +1,10 @@
 %h3
   Speech APIs
 
+
 = form_tag("/speech", mathod: "post") do
+  =select_tag :lang, "<option value='eng'>English</option><option value='cht'>Chinese</option><option value='jp'>Japanese</option>".html_safe
+  %br/
   =label_tag(:eng,"search:")
   =text_field_tag(:eng)
   =submit_tag("speech")

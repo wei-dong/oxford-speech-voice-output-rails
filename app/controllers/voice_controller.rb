@@ -12,6 +12,7 @@ class VoiceController < ApplicationController
     require 'wavefile'
     @name = SecureRandom.urlsafe_base64(5)
     @text = params[:eng]
+    @lang = params[:lang]
     puts @text
 
 
@@ -21,6 +22,7 @@ class VoiceController < ApplicationController
 # Note: Sign up at http://www.projectoxford.ai to get a subscription key.
 # Search for Speech APIs from Azure Marketplace.
 # Use the subscription key as Client secret below.
+
     clientId = "Your ClientId goes here"
     clientSecret = "Your Client Secret goes here"
     speechHost = "https://speech.platform.bing.com"
@@ -60,7 +62,17 @@ class VoiceController < ApplicationController
     }
 
 # SsmlTemplate = "<speak version='1.0' xml:lang='en-us'><voice xml:lang='%s' xml:gender='%s' name='%s'>%s</voice></speak>"
-    data = "<speak version='1.0' xml:lang='en-us'><voice xml:lang='en-US' xml:gender='Female' name='Microsoft Server Speech Text to Speech Voice (en-US, ZiraRUS)'>#{@text}</voice></speak>"
+    case @lang.to_s
+      when 'eng'
+        data = "<speak version='1.0' xml:lang='en-us'><voice xml:lang='en-US' xml:gender='Female' name='Microsoft Server Speech Text to Speech Voice (en-US, ZiraRUS)'>#{@text}</voice></speak>"
+      when 'cht'
+        data="<speak version='1.0' xmlns='http://www.w3.org/2001/10/synthesis' xmlns:mstts='http://www.w3.org/2001/mstts' xml:lang='zh-TW'><voice name='Microsoft Server Speech Text to Speech Voice (zh-TW, Yating, Apollo)'>#{@text}</voice></speak>"
+      when 'jp'
+        data="<speak version='1.0' xmlns='http://www.w3.org/2001/10/synthesis' xmlns:mstts='http://www.w3.org/2001/mstts' xml:lang='ja-JP'><voice name='Microsoft Server Speech Text to Speech Voice (ja-JP, Ayumi, Apollo)'>#{@text}</voice></speak>"
+    end
+
+    #data = "<speak version='1.0' xml:lang='en-us'><voice xml:lang='en-US' xml:gender='Female' name='Microsoft Server Speech Text to Speech Voice (en-US, ZiraRUS)'>#{@text}</voice></speak>"
+
 
 # get the wave data
     resp = http.post(url.path, data, headers)
